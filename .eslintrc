@@ -1,0 +1,11 @@
+{
+  "extends": "react-native-wcandillon",
+  "rules": {
+    "react/jsx-wrap-multilines": "off",
+    "react/prop-types": "off",
+    "react/no-unescaped-entities": "off",
+    "react/jsx-one-expression-per-line": "warn",
+    "comma-dangle": "off",
+    "prettier/prettier": "off"
+  }
+}
