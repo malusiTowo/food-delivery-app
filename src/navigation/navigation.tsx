@@ -6,6 +6,7 @@ import * as Font from "expo-font";
 import { ActivityIndicator } from "react-native";
 
 import AuthStack from "./AuthStack";
+import AppStack from "./AppStack";
 
 const CUSTOM_FONTS = {
   Roboto: require("../../node_modules/native-base/Fonts/Roboto.ttf"),
@@ -40,7 +41,7 @@ const Navigation: React.FC<AppProps> = () => {
 
   return (
     <NavigationContainer>
-      <AuthStack />
+      <AppStack />
     </NavigationContainer>
   );
 };
