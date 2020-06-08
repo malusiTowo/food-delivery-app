@@ -3,7 +3,6 @@ import {
   Dimensions,
   Image,
   KeyboardAvoidingView,
-  Platform,
   ScrollView,
   StatusBar,
   StyleSheet,
@@ -21,7 +20,7 @@ import {
   MaterialCommunityIcons,
   Octicons
 } from "@expo/vector-icons";
-import { Header, StackNavigationProp } from "@react-navigation/stack";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { Button } from "native-base";
 import RBSheet from "react-native-raw-bottom-sheet";
 

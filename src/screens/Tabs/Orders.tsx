@@ -1,15 +1,21 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 
 interface OrdersScreenProps {}
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  }
+});
 
 const OrdersScreen: React.FC<OrdersScreenProps> = () => {
   return (
-    <View>
+    <SafeAreaView style={styles.container}>
       <Text>OrdersScreen</Text>
-    </View>
+    </SafeAreaView>
   );
 };
 
