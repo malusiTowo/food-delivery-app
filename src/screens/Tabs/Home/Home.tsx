@@ -1,14 +1,14 @@
 import React, { useRef, useState } from "react";
 import {
   Dimensions,
+  FlatList,
   SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
-  TextInput,
   View
 } from "react-native";
-import { Entypo, EvilIcons, MaterialIcons } from "@expo/vector-icons";
+import { Entypo, EvilIcons } from "@expo/vector-icons";
 import { StackNavigationProp } from "@react-navigation/stack";
 import RBSheet from "react-native-raw-bottom-sheet";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -16,10 +16,17 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { Button } from "native-base";
 import moment from "moment";
 
-import { AppStackParamList } from "../../navigation/ParamList/AppStackParamList";
-import RestaurantPreview from "../../components/ExploreTab/RestaurantPreview";
+import { HomeStackParamList } from "../../../navigation/ParamList/HomeStackParamList";
+import { AppStackParamList } from "../../../navigation/ParamList/AppStackParamList";
+import RestaurantPreview from "../../../components/ExploreTab/RestaurantPreview";
+import { restaurants } from "../../../db/restaurants";
+import BottomSheet from "../../../components/bottomSheet/bottomSheet";
+import SearchBar from "../../../components/ExploreTab/SearchBar";
 
-type HomeScreenNavigationProp = StackNavigationProp<AppStackParamList, "Home">;
+type HomeScreenNavigationProp = StackNavigationProp<
+  HomeStackParamList & AppStackParamList,
+  "Home"
+>;
 
 interface HomeScreenProps {
   navigation: HomeScreenNavigationProp;
@@ -41,33 +48,7 @@ const styles = StyleSheet.create({
     fontSize: 38,
     fontWeight: "800"
   },
-  searchBarContainer: {
-    marginTop: 20,
-    alignItems: "center"
-  },
-  searchBarWrapper: {
-    backgroundColor: "#fff",
-    borderRadius: 25,
-    height: 50,
-    width: width - 50,
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
 
-    elevation: 5
-  },
-  searchInput: {
-    fontSize: 17,
-    height: 50,
-    width: "100%"
-  },
   sectionBanner: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -139,7 +120,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const HomeScreen: React.FC<HomeScreenProps> = () => {
+const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   const RBSheetRef = useRef<RBSheet>(null);
   const [date, setDate] = useState(new Date());
 
@@ -168,69 +149,49 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
           <Text style={styles.exploreBannerText}>Explore</Text>
         </View>
 
-        <View style={styles.searchBarContainer}>
-          <View style={styles.searchBarWrapper}>
-            <View>
-              <EvilIcons name="search" size={24} color="black" />
-            </View>
-            <View style={{ flex: 0.6 }}>
-              <TextInput
-                returnKeyType="go"
-                style={styles.searchInput}
-                placeholder="Search"
-              />
-            </View>
-            <View>
-              <MaterialIcons name="filter-list" size={24} color="black" />
-            </View>
-          </View>
-        </View>
+        <SearchBar />
 
         <View style={styles.sectionBanner}>
           <Text style={styles.sectionMainText}>Markets</Text>
           <Text style={styles.sectionSubText}>View All (137)</Text>
         </View>
 
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View style={styles.restaurantPreviewScrollView}>
-            <RestaurantPreview />
-          </View>
-          <View style={styles.restaurantPreviewScrollView}>
-            <RestaurantPreview />
-          </View>
-        </ScrollView>
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={restaurants}
+          keyExtractor={item => item.name}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("RestaurantDetail")}
+              style={styles.restaurantPreviewScrollView}
+            >
+              <RestaurantPreview restaurant={item} />
+            </TouchableOpacity>
+          )}
+        />
 
         <View style={styles.sectionBanner}>
           <Text style={styles.sectionMainText}>Restaurants</Text>
           <Text style={styles.sectionSubText}>View All (1290)</Text>
         </View>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View style={styles.restaurantPreviewScrollView}>
-            <RestaurantPreview />
-          </View>
-          <View style={styles.restaurantPreviewScrollView}>
-            <RestaurantPreview />
-          </View>
-        </ScrollView>
+
+        <FlatList
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={restaurants}
+          keyExtractor={item => item.name}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              onPress={() => navigation.navigate("RestaurantDetail")}
+              style={styles.restaurantPreviewScrollView}
+            >
+              <RestaurantPreview restaurant={item} />
+            </TouchableOpacity>
+          )}
+        />
       </ScrollView>
-      <RBSheet
-        ref={RBSheetRef}
-        closeOnDragDown
-        closeOnPressMask
-        customStyles={{
-          wrapper: {
-            // backgroundColor: "transparent",
-          },
-          container: {
-            borderTopLeftRadius: 20,
-            borderTopRightRadius: 20
-          },
-          draggableIcon: {
-            backgroundColor: "transparent"
-          }
-        }}
-        height={350}
-      >
+      <BottomSheet height={350} ref={RBSheetRef}>
         <DateTimePicker
           onChange={(e, changedDate = new Date()) => setDate(changedDate)}
           minuteInterval={30}
@@ -244,7 +205,7 @@ const HomeScreen: React.FC<HomeScreenProps> = () => {
             </Text>
           </Button>
         </View>
-      </RBSheet>
+      </BottomSheet>
     </SafeAreaView>
   );
 };

@@ -24,8 +24,10 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { Button } from "native-base";
 import RBSheet from "react-native-raw-bottom-sheet";
 
+import { inject } from "mobx-react";
 import { ProfileStackParamList } from "../../../navigation/ParamList/ProfileStackParamList";
 import UpdateProfileImage from "../../../components/ProfileTab/UpdateProfileImage";
+import Root from "../../../mobx/Root";
 
 type ProfileScreenNavigationProp = StackNavigationProp<
   ProfileStackParamList,
@@ -34,6 +36,7 @@ type ProfileScreenNavigationProp = StackNavigationProp<
 
 interface ProfileScreenProps {
   navigation: ProfileScreenNavigationProp;
+  root: typeof Root;
 }
 
 const { width } = Dimensions.get("screen");
@@ -178,7 +181,7 @@ const styles = StyleSheet.create({
 const initialProfileImage =
   "https://images.pexels.com/photos/1136571/pexels-photo-1136571.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500";
 
-const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
+const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation, root }) => {
   const [isEnabled, setIsEnabled] = useState<boolean>(false);
   const toggleSwitch = () => setIsEnabled(previousState => !previousState);
   const [isEnabledSwitchTwo, setIsEnabledSwitchTwo] = useState<boolean>(false);
@@ -215,6 +218,7 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
       <StatusBar barStyle="dark-content" />
       <ScrollView showsVerticalScrollIndicator={false}>
         <TouchableOpacity
+          onPress={() => root.user.logoutUser()}
           hitSlop={{ bottom: 20, left: 20, top: 20, right: 20 }}
           style={styles.logoutWrapper}
         >
@@ -432,4 +436,4 @@ const ProfileScreen: React.FC<ProfileScreenProps> = ({ navigation }) => {
   );
 };
 
-export default ProfileScreen;
+export default inject("root")(ProfileScreen);

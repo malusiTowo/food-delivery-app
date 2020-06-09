@@ -1,15 +1,21 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaView, StyleSheet, Text } from "react-native";
 
 interface PaymentScreenProps {}
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
+  }
+});
 
 const PaymentScreen: React.FC<PaymentScreenProps> = () => {
   return (
-    <View>
+    <SafeAreaView style={styles.container}>
       <Text>PaymentScreen</Text>
-    </View>
+    </SafeAreaView>
   );
 };
 

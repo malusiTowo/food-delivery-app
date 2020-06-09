@@ -1,5 +1,5 @@
 import React from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Button } from "native-base";
 import { AuthStackParamList } from "../../navigation/ParamList/AuthStackParamList";
@@ -16,16 +16,19 @@ const { width } = Dimensions.get("screen");
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fff"
   },
   btnWrapper: {
-    flex: 1,
+    flex: 0.3,
     justifyContent: "flex-end",
-    alignItems: "center",
-    marginBottom: 40
+    alignItems: "center"
+    // marginBottom: 60,
   },
   btn: {
-    marginTop: 50,
+    // marginTop: 50,
     backgroundColor: "#535BFE",
     justifyContent: "center",
     width: width - 30,
@@ -53,6 +56,16 @@ const Landing: React.FC<LandingProps> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
+      <View style={{ justifyContent: "center", alignItems: "center" }}>
+        <Text style={{ color: "#000", fontWeight: "900", fontSize: 57 }}>
+          PullUp
+        </Text>
+        <Image
+          resizeMode="contain"
+          style={{ flex: 0.7, height: 200, width: width - 30 }}
+          source={require("../../../assets/food-deliver-app-front-page.png")}
+        />
+      </View>
       <View style={styles.btnWrapper}>
         <Button style={styles.btn} onPress={goToLogin}>
           <Text style={styles.btnText}>Start Now</Text>

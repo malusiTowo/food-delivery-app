@@ -4,7 +4,7 @@ import { AntDesign, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
 
 import { AppStackParamList } from "./ParamList/AppStackParamList";
 import Basket from "../screens/Tabs/Basket";
-import Home from "../screens/Tabs/Home";
+import HomeStack from "../screens/Tabs/Home/index";
 import Orders from "../screens/Tabs/Orders";
 import ProfileStack from "../screens/Tabs/Profile/index";
 
@@ -38,7 +38,7 @@ const AppStack: React.FC<AppStackProps> = () => {
         // showLabel:false
       }}
     >
-      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Home" component={HomeStack} />
       <Tab.Screen name="Orders" component={Orders} />
       <Tab.Screen name="Basket" component={Basket} />
       <Tab.Screen name="Profile" component={ProfileStack} />

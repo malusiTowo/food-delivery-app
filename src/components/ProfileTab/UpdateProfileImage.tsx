@@ -99,7 +99,9 @@ const UpdateProfileImage: React.FC<UpdateProfileImageProps> = ({
   const handlePickImageGallery = async () => {
     const { status } = await handleImageGalleryPermissions();
     if (!status) {
-      return alert("Sorry, we need camera roll permissions to make this work!");
+      return console.log(
+        "Sorry, we need camera roll permissions to make this work!"
+      );
     }
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -109,12 +111,15 @@ const UpdateProfileImage: React.FC<UpdateProfileImageProps> = ({
     });
 
     setImage(result);
+    return "SUCCESS";
   };
 
   const handleTakePicture = async () => {
     const { status } = await handleTakePicturePermissions();
     if (!status) {
-      return alert("Sorry, we need camera roll permissions to make this work!");
+      return console.log(
+        "Sorry, we need camera roll permissions to make this work!"
+      );
     }
     const result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -124,6 +129,7 @@ const UpdateProfileImage: React.FC<UpdateProfileImageProps> = ({
     });
 
     setImage(result);
+    return "SUCCESS";
   };
 
   return (

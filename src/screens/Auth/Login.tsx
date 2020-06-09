@@ -13,7 +13,9 @@ import { Button } from "native-base";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
 
+import { inject } from "mobx-react";
 import { AuthStackParamList } from "../../navigation/ParamList/AuthStackParamList";
+import Root from "../../mobx/Root";
 
 type LoginScreenNavigationProp = StackNavigationProp<
   AuthStackParamList,
@@ -22,6 +24,7 @@ type LoginScreenNavigationProp = StackNavigationProp<
 
 interface LoginProps {
   navigation: LoginScreenNavigationProp;
+  root: typeof Root;
 }
 
 const { width } = Dimensions.get("screen");
@@ -147,14 +150,14 @@ const styles = StyleSheet.create({
   }
 });
 
-const Login: React.FC<LoginProps> = ({ navigation }) => {
+const Login: React.FC<LoginProps> = ({ navigation, root }) => {
   const passwordInputRef = useRef<TextInput>(null);
   const [showPassword, setShowPassword] = useState(false);
   const goToSignUp = () => navigation.navigate("SignUp");
 
   const goToForgetPassword = () => navigation.navigate("ForgotPassword");
 
-  const focusPasswordInput = () => passwordInputRef?.current.focus();
+  const focusPasswordInput = () => passwordInputRef?.current?.focus();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -211,7 +214,7 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
       </View>
 
       <View style={styles.btnWrapper}>
-        <Button style={styles.btn}>
+        <Button onPress={() => root.user.setUser("User")} style={styles.btn}>
           <Text style={styles.btnText}>Sign In</Text>
         </Button>
       </View>
@@ -226,7 +229,11 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
       </View>
 
       <View style={styles.googleBtnWrapper}>
-        <Button style={styles.googleBtn} iconLeft>
+        <Button
+          onPress={() => root.user.setUser("User")}
+          style={styles.googleBtn}
+          iconLeft
+        >
           <FontAwesome size={20} color="#000" name="google" />
           <Text style={styles.googleBtnText}>Sign In with Google</Text>
         </Button>
@@ -235,4 +242,4 @@ const Login: React.FC<LoginProps> = ({ navigation }) => {
   );
 };
 
-export default Login;
+export default inject("root")(Login);
