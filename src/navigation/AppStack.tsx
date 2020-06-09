@@ -1,49 +1,24 @@
 import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { AntDesign, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
+import { createStackNavigator } from "@react-navigation/stack";
 
 import { AppStackParamList } from "./ParamList/AppStackParamList";
-import Basket from "../screens/Tabs/Basket";
-import HomeStack from "../screens/Tabs/Home/index";
-import Orders from "../screens/Tabs/Orders";
-import ProfileStack from "../screens/Tabs/Profile/index";
+
+import Tabs from "../screens/Tabs/index";
+import Filters from "../screens/FiltersScreen/Filters";
+import CheckOut from "../screens/CheckOut/Checkout";
+
+const AppStack = createStackNavigator<AppStackParamList>();
 
 interface AppStackProps {}
 
-const Tab = createBottomTabNavigator<AppStackParamList>();
-
-const AppStack: React.FC<AppStackProps> = () => {
+const App: React.FC<AppStackProps> = () => {
   return (
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        tabBarIcon: ({ color }) => {
-          let icon = <></>;
-
-          if (route.name === "Home") {
-            icon = <AntDesign name="home" size={20} color={color} />;
-          } else if (route.name === "Orders") {
-            icon = <SimpleLineIcons name="bag" size={20} color={color} />;
-          } else if (route.name === "Basket") {
-            icon = <SimpleLineIcons name="basket" size={20} color={color} />;
-          } else if (route.name === "Profile") {
-            icon = <Ionicons name="md-person" size={20} color={color} />;
-          }
-
-          return icon;
-        }
-      })}
-      tabBarOptions={{
-        activeTintColor: "#535BFE",
-        inactiveTintColor: "#000"
-        // showLabel:false
-      }}
-    >
-      <Tab.Screen name="Home" component={HomeStack} />
-      <Tab.Screen name="Orders" component={Orders} />
-      <Tab.Screen name="Basket" component={Basket} />
-      <Tab.Screen name="Profile" component={ProfileStack} />
-    </Tab.Navigator>
+    <AppStack.Navigator headerMode="none">
+      <AppStack.Screen name="Tabs" component={Tabs} />
+      <AppStack.Screen name="Filters" component={Filters} />
+      <AppStack.Screen name="CheckOut" component={CheckOut} />
+    </AppStack.Navigator>
   );
 };
 
-export default AppStack;
+export default App;

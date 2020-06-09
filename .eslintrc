@@ -4,7 +4,7 @@
     "react/jsx-wrap-multilines": "off",
     "react/prop-types": "off",
     "react/no-unescaped-entities": "off",
-    "react/jsx-one-expression-per-line": "warn",
+    "react/jsx-one-expression-per-line": "off",
     "comma-dangle": "off",
     "prettier/prettier": "off"
   }

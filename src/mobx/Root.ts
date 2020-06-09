@@ -8,7 +8,7 @@ const RootStore = types
   })
   .views(self => ({
     get isLoggedIn() {
-      return !!self.user.name;
+      return self.user.name.length >= 0;
     }
   }));
 

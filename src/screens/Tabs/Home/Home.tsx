@@ -4,6 +4,7 @@ import {
   FlatList,
   SafeAreaView,
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   View
@@ -126,6 +127,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" />
       <View style={styles.locationInputContainer}>
         <TouchableOpacity
           hitSlop={{ top: 20, left: 20, bottom: 20, right: 20 }}

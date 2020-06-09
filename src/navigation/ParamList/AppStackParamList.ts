@@ -1,6 +1,5 @@
 export type AppStackParamList = {
-  Home: undefined;
-  Orders: undefined;
-  Basket: undefined;
-  Profile: undefined;
+  Tabs: undefined;
+  Filters: undefined;
+  CheckOut: undefined;
 };

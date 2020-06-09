@@ -2,6 +2,7 @@ import React from "react";
 import { Dimensions, StyleSheet, TextInput, View } from "react-native";
 import { EvilIcons, MaterialIcons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
 
 interface SearchBarProps {}
 
@@ -38,6 +39,8 @@ const styles = StyleSheet.create({
 });
 
 const SearchBar: React.FC<SearchBarProps> = () => {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.searchBarContainer}>
       <View style={styles.searchBarWrapper}>
@@ -51,7 +54,7 @@ const SearchBar: React.FC<SearchBarProps> = () => {
             placeholder="Search"
           />
         </View>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate("Filters")}>
           <MaterialIcons name="filter-list" size={24} color="black" />
         </TouchableOpacity>
       </View>
