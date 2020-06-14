@@ -1,4 +1,8 @@
-import React from "react";
+import { Ionicons } from "@expo/vector-icons";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { inject, observer } from "mobx-react";
+import { Button } from "native-base";
+import React, { useState } from "react";
 import {
   Dimensions,
   FlatList,
@@ -8,23 +12,23 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { Button } from "native-base";
-
-import { Ionicons } from "@expo/vector-icons";
 import { ScrollView } from "react-native-gesture-handler";
-import { AppStackParamList } from "../../navigation/ParamList/AppStackParamList";
-import { restaurants } from "../../db/restaurants";
 import ProductDisplay from "../../components/Basket/ProductDisplay";
+import ModalComponent from "../../components/Modal/Modal";
 import ShippingForm from "../../components/shipping/ShippingForm";
+import { restaurants } from "../../db/restaurants";
+import Root from "../../mobx/Root";
+import { AppStackParamList } from "../../navigation/ParamList/AppStackParamList";
+import { TabsParamList } from "../../navigation/ParamList/TabsParamList";
 
 type CheckOutScreenNavigationProp = StackNavigationProp<
-  AppStackParamList,
+  AppStackParamList & TabsParamList,
   "CheckOut"
 >;
 
 interface CheckOutProps {
   navigation: CheckOutScreenNavigationProp;
+  root: typeof Root;
 }
 
 const { width } = Dimensions.get("screen");
@@ -64,7 +68,16 @@ const styles = StyleSheet.create({
   }
 });
 
-const CheckOut: React.FC<CheckOutProps> = ({ navigation }) => {
+const CheckOut: React.FC<CheckOutProps> = ({ navigation, root }) => {
+  const deliveryCharges = 2.2;
+  const [isVisible, setIsVisible] = useState(false);
+  const closeModal = () => {
+    setIsVisible(false);
+    root.orders.setProducts(root.basket.products);
+    root.basket.clearBasket();
+    navigation.navigate("Orders");
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity
@@ -79,7 +92,7 @@ const CheckOut: React.FC<CheckOutProps> = ({ navigation }) => {
         <View style={{ marginLeft: 20, marginTop: 10 }}>
           <Text style={{ fontSize: 38, fontWeight: "800" }}>Check Out</Text>
         </View>
-        {restaurants[0].products.map(item => {
+        {root?.basket?.products.map(item => {
           return (
             <View key={item.name} style={{ margin: 10 }}>
               <ProductDisplay product={item} />
@@ -133,7 +146,9 @@ const CheckOut: React.FC<CheckOutProps> = ({ navigation }) => {
             <Text style={{ fontWeight: "500", fontSize: 15 }}>
               Basket Charges
             </Text>
-            <Text style={{ fontWeight: "500", fontSize: 15 }}>$26.99</Text>
+            <Text style={{ fontWeight: "500", fontSize: 15 }}>
+              ${root.basket.basketTotal}
+            </Text>
           </View>
           <View
             style={{
@@ -146,7 +161,9 @@ const CheckOut: React.FC<CheckOutProps> = ({ navigation }) => {
             <Text style={{ fontWeight: "500", fontSize: 15 }}>
               Delivery Charges
             </Text>
-            <Text style={{ fontWeight: "500", fontSize: 15 }}>$2.20</Text>
+            <Text style={{ fontWeight: "500", fontSize: 15 }}>
+              ${deliveryCharges}
+            </Text>
           </View>
           <View
             style={{
@@ -159,19 +176,26 @@ const CheckOut: React.FC<CheckOutProps> = ({ navigation }) => {
               Total Amount
             </Text>
             <Text style={{ fontWeight: "500", fontSize: 15, color: "#535BFE" }}>
-              $45.99
+              ${root.basket.basketTotal + deliveryCharges}
             </Text>
           </View>
         </View>
 
         <View style={styles.btnWrapper}>
-          <Button style={styles.btn}>
+          <Button onPress={() => setIsVisible(true)} style={styles.btn}>
             <Text style={styles.btnText}>Place Order</Text>
           </Button>
         </View>
       </ScrollView>
+      <ModalComponent
+        toggle={closeModal}
+        isVisible={isVisible}
+        btnTitle="Continue shopping"
+        body="You can track the delivery in the orders tab"
+        title="Order number is 3399922"
+      />
     </SafeAreaView>
   );
 };
 
-export default CheckOut;
+export default inject("root")(observer(CheckOut));

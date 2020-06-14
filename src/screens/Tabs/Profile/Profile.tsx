@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     borderColor: "#535BFE"
   },
   editBtnText: {
-    color: "#000",
+    color: "#535BFE",
     fontSize: 20
   },
   logoutWrapper: {

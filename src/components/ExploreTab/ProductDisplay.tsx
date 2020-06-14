@@ -1,33 +1,29 @@
-import React from "react";
-import {
-  Dimensions,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
-} from "react-native";
+import React, { useState } from "react";
+import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
+import { Button } from "native-base";
+import { Product } from "../../db/restaurants";
 
-interface ProductDisplayProps {}
+interface ProductDisplayProps {
+  product: Product;
+  addProduct: (product: Product) => void;
+  removeProduct: (product: Product) => void;
+}
 
 const { width } = Dimensions.get("screen");
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "flex-end",
-    justifyContent: "flex-start"
+    alignItems: "flex-end"
   },
-  wrapper: {
-    flex: 0.5,
-    height: 200,
+  productInfoWrapper: {
+    height: 150,
     width: width - 100,
     borderRadius: 10,
     backgroundColor: "#fff",
     justifyContent: "center",
-    alignItems: "flex-end",
-    padding: 5,
-    paddingHorizontal: 10,
-    paddingBottom: 10,
+    alignItems: "flex-start",
+    paddingLeft: 35,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -38,80 +34,114 @@ const styles = StyleSheet.create({
 
     elevation: 5
   },
-  titleWrapper: {
-    // flexDirection: "row",
-    justifyContent: "space-between",
-    // alignItems: "center",
-    marginBottom: 5
+  productNameWrapper: {
+    marginBottom: 5,
+    marginLeft: 25,
+    width: 200
   },
-  titleText: {
+  productNameText: {
     fontSize: 17,
-    fontWeight: "700",
-    marginBottom: 5
+    fontWeight: "700"
   },
-  distanceText: {
-    color: "#535BFE",
-    fontSize: 15,
+  productDescriptionWrapper: {
+    marginBottom: 5,
+    marginLeft: 25,
+    width: 200
+  },
+  productDescriptionText: {
+    color: "#ccc",
+    fontWeight: "500"
+  },
+  productPriceWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: 15,
+    marginLeft: 25,
+    width: "80%"
+  },
+  productPriceText: {
     fontWeight: "500",
-    width: 150
+    color: "#535BFE"
   },
-  editBtn: {
-    marginTop: 10,
+  buyBtn: {
     backgroundColor: "#fff",
     justifyContent: "center",
-    alignItems: "center",
-    width: 80,
+    width: 100,
     height: 30,
     borderRadius: 30,
-    borderWidth: 1,
-    borderColor: "#535BFE"
+    borderWidth: 1.3
   },
-  editBtnText: {
-    color: "#000",
-    fontSize: 15
+  buyBtnText: {
+    fontWeight: "500"
+  },
+  imageWrapper: {
+    width: 100,
+    height: 100,
+    left: 15,
+    top: 20,
+    position: "absolute",
+    zIndex: 1,
+    alignSelf: "center",
+    alignItems: "center",
+    justifyContent: "center"
   }
 });
 
-const ProductDisplay: React.FC<ProductDisplayProps> = () => {
+const ProductDisplay: React.FC<ProductDisplayProps> = ({
+  product,
+  addProduct,
+  removeProduct
+}) => {
+  const [isBought, setIsBought] = useState<boolean>(false);
+  const handleBuyInteraction = () => {
+    setIsBought((prevState: boolean) => {
+      if (!prevState) addProduct(product);
+      else removeProduct(product);
+      return !prevState;
+    });
+  };
+
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          width: "100%",
-          top: 14,
-          left: 5,
-          position: "absolute",
-          zIndex: 1,
-          alignItems: "flex-start"
-        }}
-      >
+      <View style={styles.imageWrapper}>
         <Image
-          style={{ height: 170, width: 180, borderRadius: 7 }}
+          style={{ height: 120, width: 120, borderRadius: 7 }}
           source={{
-            uri:
-              "https://images.pexels.com/photos/1251198/pexels-photo-1251198.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+            uri: product.imageUrl
           }}
         />
       </View>
 
-      <View style={styles.wrapper}>
-        <View style={styles.titleWrapper}>
-          <Text style={styles.titleText}>Pumpkin Soup</Text>
-          <Text numberOfLines={3} style={styles.distanceText}>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit
+      <View style={styles.productInfoWrapper}>
+        <View style={styles.productNameWrapper}>
+          <Text numberOfLines={1} style={styles.productNameText}>
+            {product.name}
           </Text>
         </View>
-        <View
-          style={{
-            alignSelf: "flex-end",
-            flexDirection: "row",
-            alignItems: "center"
-          }}
-        >
-          {/* <Text>$9.25</Text> */}
-          <TouchableOpacity style={styles.editBtn}>
-            <Text style={styles.editBtnText}>Buy</Text>
-          </TouchableOpacity>
+        <View style={styles.productDescriptionWrapper}>
+          <Text numberOfLines={2} style={styles.productDescriptionText}>
+            {product.description}
+          </Text>
+        </View>
+        <View style={styles.productPriceWrapper}>
+          <Text style={styles.productPriceText}>${product.price}</Text>
+          <Button
+            onPress={handleBuyInteraction}
+            style={[
+              styles.buyBtn,
+              { borderColor: isBought ? "#FF4766" : "#535BFE" }
+            ]}
+          >
+            <Text
+              style={[
+                styles.buyBtnText,
+                { color: isBought ? "#FF4766" : "#535BFE" }
+              ]}
+            >
+              {isBought ? "Remove" : "Buy"}
+            </Text>
+          </Button>
         </View>
       </View>
     </View>

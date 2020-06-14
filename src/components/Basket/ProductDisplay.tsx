@@ -1,12 +1,14 @@
-import React, { useState } from "react";
-import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-
+import { inject, observer } from "mobx-react";
+import React from "react";
+import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Product } from "../../db/restaurants";
+import Root from "../../mobx/Root";
 
 interface ProductDisplayProps {
   product: Product;
+  root?: typeof Root;
 }
 
 const { width } = Dimensions.get("screen");
@@ -51,14 +53,17 @@ const styles = StyleSheet.create({
     width: 150
   },
   imageWrapper: {
-    width: "100%",
-    height: "100%",
+    width: 100,
+    height: 100,
     left: 5,
-    top: 0,
+    top: 20,
     right: 0,
     position: "absolute",
     zIndex: 1,
-    alignItems: "flex-start",
+    alignSelf: "center",
+
+    // alignItems: "flex-start",
+    alignItems: "center",
     justifyContent: "center"
   },
   image: {
@@ -87,18 +92,20 @@ const styles = StyleSheet.create({
   }
 });
 
-const ProductDisplay: React.FC<ProductDisplayProps> = ({ product }) => {
-  const [quantity, setQuantity] = useState(1);
-
+const ProductDisplay: React.FC<ProductDisplayProps> = ({ product, root }) => {
   const subQuantity = () => {
-    if (quantity > 1) {
-      setQuantity(prevState => prevState - 1);
+    const newQuantity = product.quantity - 1;
+    if (product.quantity === 1) root.basket.removeProduct(product);
+    if (product.quantity > 1) {
+      root.basket.upateProductQuantity(product, newQuantity);
     }
   };
 
   const addQuantity = () => {
-    if (quantity < 10) {
-      setQuantity(prevState => prevState + 1);
+    const newQuantity = product.quantity + 1;
+
+    if (product.quantity < 10) {
+      root.basket.upateProductQuantity(product, newQuantity);
     }
   };
 
@@ -119,10 +126,13 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ product }) => {
           >
             <Text style={styles.distanceText}>300 g / piece</Text>
             <View style={styles.quantityWrapper}>
-              <TouchableOpacity onPress={subQuantity}>
+              <TouchableOpacity
+                hitSlop={{ top: 20, left: 20, bottom: 20, right: 20 }}
+                onPress={subQuantity}
+              >
                 <AntDesign name="minus" size={18} color="#535BFE" />
               </TouchableOpacity>
-              <Text style={styles.quantityNumber}>{quantity}</Text>
+              <Text style={styles.quantityNumber}>{product.quantity}</Text>
               <TouchableOpacity
                 hitSlop={{ top: 20, left: 20, bottom: 20, right: 20 }}
                 onPress={addQuantity}
@@ -133,7 +143,7 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ product }) => {
           </View>
           <View style={styles.priceQuantityWrapper}>
             <Text>${product.price}</Text>
-            <Text>${product.price * quantity} </Text>
+            <Text>${product.price * product.quantity} </Text>
           </View>
         </View>
       </View>
@@ -141,4 +151,4 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({ product }) => {
   );
 };
 
-export default ProductDisplay;
+export default inject("root")(observer(ProductDisplay));

@@ -6,6 +6,7 @@
     "react/no-unescaped-entities": "off",
     "react/jsx-one-expression-per-line": "off",
     "comma-dangle": "off",
-    "prettier/prettier": "off"
+    "prettier/prettier": "off",
+    "curly": "off"
   }
 }

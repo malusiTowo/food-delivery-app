@@ -1,7 +1,7 @@
 import React from "react";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
-import RestaurantTab from "./RestaurantTab";
+import PastCurrentTab from "./PastCurrentTab";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -20,19 +20,14 @@ function RestaurantProductTabs() {
       }}
     >
       <Tab.Screen
-        options={{ title: "Popular", tabBarLabel: "Popular" }}
-        name="Popular"
-        component={RestaurantTab}
+        options={{ title: "Past" }}
+        name="Past"
+        component={PastCurrentTab}
       />
       <Tab.Screen
-        options={{ title: "Burgers" }}
-        name="Burgers"
-        component={RestaurantTab}
-      />
-      <Tab.Screen
-        options={{ title: "Pizzas" }}
-        name="Pizzas"
-        component={RestaurantTab}
+        options={{ title: "Current" }}
+        name="Current"
+        component={PastCurrentTab}
       />
     </Tab.Navigator>
   );

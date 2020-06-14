@@ -1,3 +1,10 @@
+/* eslint-disable react/jsx-curly-newline */
+import { Entypo, EvilIcons } from "@expo/vector-icons";
+import DateTimePicker from "@react-native-community/datetimepicker";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { inject } from "mobx-react";
+import moment from "moment";
+import { Button } from "native-base";
 import React, { useRef, useState } from "react";
 import {
   Dimensions,
@@ -9,20 +16,15 @@ import {
   Text,
   View
 } from "react-native";
-import { Entypo, EvilIcons } from "@expo/vector-icons";
-import { StackNavigationProp } from "@react-navigation/stack";
-import RBSheet from "react-native-raw-bottom-sheet";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { Button } from "native-base";
-import moment from "moment";
-
-import { HomeStackParamList } from "../../../navigation/ParamList/HomeStackParamList";
-import { AppStackParamList } from "../../../navigation/ParamList/AppStackParamList";
-import RestaurantPreview from "../../../components/ExploreTab/RestaurantPreview";
-import { restaurants } from "../../../db/restaurants";
+import RBSheet from "react-native-raw-bottom-sheet";
 import BottomSheet from "../../../components/bottomSheet/bottomSheet";
+import RestaurantPreview from "../../../components/ExploreTab/RestaurantPreview";
 import SearchBar from "../../../components/ExploreTab/SearchBar";
+import { restaurants } from "../../../db/restaurants";
+import Root from "../../../mobx/Root";
+import { AppStackParamList } from "../../../navigation/ParamList/AppStackParamList";
+import { HomeStackParamList } from "../../../navigation/ParamList/HomeStackParamList";
 
 type HomeScreenNavigationProp = StackNavigationProp<
   HomeStackParamList & AppStackParamList,
@@ -31,6 +33,7 @@ type HomeScreenNavigationProp = StackNavigationProp<
 
 interface HomeScreenProps {
   navigation: HomeScreenNavigationProp;
+  root: typeof Root;
 }
 
 const { width } = Dimensions.get("screen");
@@ -121,7 +124,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
+const HomeScreen: React.FC<HomeScreenProps> = ({ navigation, root }) => {
   const RBSheetRef = useRef<RBSheet>(null);
   const [date, setDate] = useState(new Date());
 
@@ -165,7 +168,10 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
           keyExtractor={item => item.name}
           renderItem={({ item }) => (
             <TouchableOpacity
-              onPress={() => navigation.navigate("RestaurantDetail")}
+              onPress={() => {
+                navigation.navigate("RestaurantDetail", { restaurant: item });
+                root.restaurantProducts.setProducts(item.products);
+              }}
               style={styles.restaurantPreviewScrollView}
             >
               <RestaurantPreview restaurant={item} />
@@ -185,7 +191,9 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
           keyExtractor={item => item.name}
           renderItem={({ item }) => (
             <TouchableOpacity
-              onPress={() => navigation.navigate("RestaurantDetail")}
+              onPress={() =>
+                navigation.navigate("RestaurantDetail", { restaurant: item })
+              }
               style={styles.restaurantPreviewScrollView}
             >
               <RestaurantPreview restaurant={item} />
@@ -212,4 +220,4 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation }) => {
   );
 };
 
-export default HomeScreen;
+export default inject("root")(HomeScreen);

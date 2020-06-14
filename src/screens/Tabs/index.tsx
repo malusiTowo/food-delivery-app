@@ -1,11 +1,10 @@
-import React from "react";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AntDesign, Ionicons, SimpleLineIcons } from "@expo/vector-icons";
-
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import React from "react";
 import { TabsParamList } from "../../navigation/ParamList/TabsParamList";
-import Basket from "./Basket";
+import Basket from "./Basket/Basket";
 import HomeStack from "./Home/index";
-import Orders from "./Orders";
+import Orders from "./Orders/index";
 import ProfileStack from "./Profile/index";
 
 interface AppStackProps {}

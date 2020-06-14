@@ -4,6 +4,7 @@ export interface Product {
   description: string;
   imageUrl: string;
   price: number;
+  quantity: number;
 }
 export interface Restaurant {
   reviewRating: number;
@@ -39,7 +40,8 @@ export const restaurants: Restaurant[] = [
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce iaculis, purus iaculis blandit imperdiet, ex neque pharetra ligula, ut viverra est nibh a neque. Nunc vel imperdiet lacus. ",
         imageUrl:
           "https://images.pexels.com/photos/1633578/pexels-photo-1633578.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-        price: 10
+        price: 10,
+        quantity: 1
       },
       {
         name: "Double Whopper",
@@ -47,7 +49,8 @@ export const restaurants: Restaurant[] = [
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce iaculis, purus iaculis blandit imperdiet, ex neque pharetra ligula, ut viverra est nibh a neque. Nunc vel imperdiet lacus. ",
         imageUrl:
           "https://images.pexels.com/photos/580612/pexels-photo-580612.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-        price: 8
+        price: 8,
+        quantity: 1
       },
       {
         name: "Big King XXL",
@@ -55,7 +58,8 @@ export const restaurants: Restaurant[] = [
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce iaculis, purus iaculis blandit imperdiet, ex neque pharetra ligula, ut viverra est nibh a neque. Nunc vel imperdiet lacus. ",
         imageUrl:
           "https://images.pexels.com/photos/1841108/pexels-photo-1841108.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-        price: 12
+        price: 12,
+        quantity: 1
       }
     ]
   },
@@ -77,7 +81,8 @@ export const restaurants: Restaurant[] = [
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce iaculis, purus iaculis blandit imperdiet, ex neque pharetra ligula, ut viverra est nibh a neque. Nunc vel imperdiet lacus. ",
         imageUrl:
           "https://images.pexels.com/photos/803290/pexels-photo-803290.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-        price: 10
+        price: 10,
+        quantity: 1
       },
       {
         name: "Samouraï",
@@ -85,7 +90,8 @@ export const restaurants: Restaurant[] = [
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce iaculis, purus iaculis blandit imperdiet, ex neque pharetra ligula, ut viverra est nibh a neque. Nunc vel imperdiet lacus. ",
         imageUrl:
           "https://images.pexels.com/photos/315755/pexels-photo-315755.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-        price: 8
+        price: 8,
+        quantity: 1
       },
       {
         name: "Noridque",
@@ -93,7 +99,8 @@ export const restaurants: Restaurant[] = [
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce iaculis, purus iaculis blandit imperdiet, ex neque pharetra ligula, ut viverra est nibh a neque. Nunc vel imperdiet lacus. ",
         imageUrl:
           "https://images.pexels.com/photos/825661/pexels-photo-825661.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-        price: 12
+        price: 12,
+        quantity: 1
       }
     ]
   },
@@ -116,7 +123,8 @@ export const restaurants: Restaurant[] = [
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce iaculis, purus iaculis blandit imperdiet, ex neque pharetra ligula, ut viverra est nibh a neque. Nunc vel imperdiet lacus. ",
         imageUrl:
           "https://images.pexels.com/photos/1633525/pexels-photo-1633525.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-        price: 10
+        price: 10,
+        quantity: 1
       },
       {
         name: "Menu Sub30 Beef Pastrami",
@@ -124,7 +132,8 @@ export const restaurants: Restaurant[] = [
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce iaculis, purus iaculis blandit imperdiet, ex neque pharetra ligula, ut viverra est nibh a neque. Nunc vel imperdiet lacus. ",
         imageUrl:
           "https://images.pexels.com/photos/2955819/pexels-photo-2955819.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-        price: 8
+        price: 8,
+        quantity: 1
       },
       {
         name: "Menu Sub30 chicken Teriyaki",
@@ -132,7 +141,8 @@ export const restaurants: Restaurant[] = [
           "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce iaculis, purus iaculis blandit imperdiet, ex neque pharetra ligula, ut viverra est nibh a neque. Nunc vel imperdiet lacus. ",
         imageUrl:
           "https://images.pexels.com/photos/1209029/pexels-photo-1209029.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500",
-        price: 12
+        price: 12,
+        quantity: 1
       }
     ]
   }

@@ -1,5 +1,9 @@
 /* eslint-disable max-len */
-import React, { useRef, useState } from "react";
+import { Ionicons, SimpleLineIcons } from "@expo/vector-icons";
+import { RouteProp, useRoute } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { inject, observer } from "mobx-react";
+import React from "react";
 import {
   Dimensions,
   Image,
@@ -10,20 +14,11 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import DateTimePicker from "@react-native-community/datetimepicker";
-import { Button } from "native-base";
-import moment from "moment";
-import RBSheet from "react-native-raw-bottom-sheet";
-import { Feather, SimpleLineIcons } from "@expo/vector-icons";
 import { AirbnbRating } from "react-native-ratings";
-import BottomSheet from "../../../components/bottomSheet/bottomSheet";
-import { HomeStackParamList } from "../../../navigation/ParamList/HomeStackParamList";
-import { Restaurant } from "../../../db/restaurants";
-
-import ExploreHeader from "../../../components/ExploreTab/ExploreHeader";
-import RestaurantProductTabs from "./RestaurantProductTabs/RestaurantProductTabs";
 import SearchBar from "../../../components/ExploreTab/SearchBar";
+import Root from "../../../mobx/Root";
+import { HomeStackParamList } from "../../../navigation/ParamList/HomeStackParamList";
+import RestaurantProductTabs from "./RestaurantProductTabs/RestaurantProductTabs";
 
 type RestaurantDetailScreenNavigationProp = StackNavigationProp<
   HomeStackParamList,
@@ -31,8 +26,8 @@ type RestaurantDetailScreenNavigationProp = StackNavigationProp<
 >;
 
 interface RestaurantDetailProps {
-  restaurant: Restaurant;
   navigation: RestaurantDetailScreenNavigationProp;
+  root: typeof Root;
 }
 
 const { width } = Dimensions.get("screen");
@@ -43,38 +38,27 @@ const styles = StyleSheet.create({
     backgroundColor: "#F9F9FB",
     paddingBottom: 0
   },
-  btnWrapper: {
-    alignItems: "center"
-  },
-  btn: {
-    backgroundColor: "#535BFE",
-    justifyContent: "center",
-    width: width - 30,
-    height: 60,
-    borderRadius: 30,
-    shadowColor: "#535BFE",
-    shadowOffset: {
-      width: 0,
-      height: 3
-    },
-    shadowOpacity: 0.27,
-    shadowRadius: 4.65,
-
-    elevation: 6
-  },
-  btnText: {
-    color: "#fff",
-    fontSize: 20
+  backBtnWrapper: {
+    marginLeft: 20,
+    marginTop: 10
   }
 });
 
-const RestaurantDetail: React.FC<RestaurantDetailProps> = () => {
-  const [date, setDate] = useState(new Date());
-  const RBSheetRef = useRef<RBSheet>(null);
-  const RBSheetRestaurantInfoRef = useRef<RBSheet>(null);
+const RestaurantDetail: React.FC<RestaurantDetailProps> = ({ navigation }) => {
+  const {
+    params: { restaurant }
+  } = useRoute<RouteProp<HomeStackParamList, "RestaurantDetail">>();
+
   return (
     <SafeAreaView style={styles.container}>
-      <ExploreHeader />
+      <TouchableOpacity
+        hitSlop={{ bottom: 20, left: 20, top: 20, right: 20 }}
+        onPress={navigation.goBack}
+        style={styles.backBtnWrapper}
+      >
+        <Ionicons name="ios-arrow-back" size={35} color="black" />
+      </TouchableOpacity>
+
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
           style={{
@@ -92,20 +76,14 @@ const RestaurantDetail: React.FC<RestaurantDetailProps> = () => {
           <Image
             style={{ width: 50, height: 50, borderRadius: 5 }}
             source={{
-              uri:
-                "https://images.pexels.com/photos/1251198/pexels-photo-1251198.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500"
+              uri: restaurant.coverImage
             }}
           />
           <Text
             style={{ fontSize: 37, fontWeight: "800", marginHorizontal: 10 }}
           >
-            Yellow Food
+            {restaurant.name}
           </Text>
-          <TouchableOpacity
-            onPress={() => RBSheetRestaurantInfoRef?.current?.open()}
-          >
-            <Feather name="info" size={24} color="black" />
-          </TouchableOpacity>
         </View>
 
         <View
@@ -120,16 +98,18 @@ const RestaurantDetail: React.FC<RestaurantDetailProps> = () => {
             <AirbnbRating
               isDisabled
               showRating={false}
-              defaultRating={1}
+              defaultRating={restaurant.reviewRating}
               count={1}
               size={13}
             />
-            <Text style={{ color: "#ccc", paddingLeft: 3 }}>4,9 (430)</Text>
+            <Text style={{ color: "#ccc", paddingLeft: 3 }}>
+              {restaurant.reviewRating} ({restaurant.totalReviews})
+            </Text>
           </View>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <SimpleLineIcons name="bag" size={20} color="#535BFE" />
             <Text style={{ color: "#ccc", paddingLeft: 3 }}>
-              Order from $10
+              Order from ${restaurant.orderMinValue}
             </Text>
           </View>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -146,26 +126,8 @@ const RestaurantDetail: React.FC<RestaurantDetailProps> = () => {
           <RestaurantProductTabs />
         </View>
       </ScrollView>
-      <BottomSheet height={350} ref={RBSheetRef}>
-        <DateTimePicker
-          onChange={(e, changedDate = new Date()) => setDate(changedDate)}
-          minuteInterval={30}
-          value={date}
-          mode="datetime"
-        />
-        <View style={styles.btnWrapper}>
-          <Button style={styles.btn} iconLeft>
-            <Text style={styles.btnText}>
-              {moment(date).format("dddd  HH:mm")}
-            </Text>
-          </Button>
-        </View>
-      </BottomSheet>
-      <BottomSheet ref={RBSheetRestaurantInfoRef} height={350}>
-        <Text>Open</Text>
-      </BottomSheet>
     </SafeAreaView>
   );
 };
 
-export default RestaurantDetail;
+export default inject("root")(observer(RestaurantDetail));
