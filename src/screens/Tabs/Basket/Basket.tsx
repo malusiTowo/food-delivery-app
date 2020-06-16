@@ -70,7 +70,8 @@ const BasketScreen: React.FC<BasketScreenProps> = ({ navigation, root }) => {
   };
   useEffect(() => {
     if (root?.basket?.products?.length === 0) setIsVisible(true);
-  }, [root?.basket?.products]);
+  }, [root.basket.products]);
+
   const goToCheckout = () => navigation.navigate("CheckOut");
 
   return (

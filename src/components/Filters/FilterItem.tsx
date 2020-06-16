@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 interface FilterItemProps {
@@ -19,12 +19,21 @@ const styles = StyleSheet.create({
   text: {
     color: "#535BFE",
     fontWeight: "500"
+  },
+  pressedFilterItem: {
+    borderColor: "#535BFE",
+    borderWidth: 1,
+    backgroundColor: "#fff"
   }
 });
 
 const FilterItem: React.FC<FilterItemProps> = ({ filter }) => {
+  const [hasBeenPressed, setHasBeenPressed] = useState<boolean>(false);
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity
+      onPress={() => setHasBeenPressed(prevState => !prevState)}
+      style={[styles.container, hasBeenPressed && styles.pressedFilterItem]}
+    >
       <Text style={styles.text}>{filter}</Text>
     </TouchableOpacity>
   );

@@ -13,7 +13,7 @@ const BaksetStore = types
     },
     removeProduct(product: Product) {
       const removeProductFilter = ({ name }: { name: string }) =>
-        name !== product.name || {};
+        name !== product.name;
       self.products = self.products.filter(removeProductFilter);
     },
     findProduct(product: Product) {
@@ -24,7 +24,7 @@ const BaksetStore = types
     },
     upateProductQuantity(product: Product, newQuantity: number) {
       const selectedProduct = this.findProduct(product);
-      selectedProduct.quantity = newQuantity;
+      if (selectedProduct) selectedProduct.quantity = newQuantity;
     },
     clearBasket() {
       self.products = [];

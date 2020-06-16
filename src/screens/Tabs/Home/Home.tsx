@@ -1,5 +1,4 @@
 /* eslint-disable react/jsx-curly-newline */
-import { Entypo, EvilIcons } from "@expo/vector-icons";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { inject } from "mobx-react";
@@ -21,7 +20,7 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import BottomSheet from "../../../components/bottomSheet/bottomSheet";
 import RestaurantPreview from "../../../components/ExploreTab/RestaurantPreview";
 import SearchBar from "../../../components/ExploreTab/SearchBar";
-import { restaurants } from "../../../db/restaurants";
+import { Restaurant, restaurants } from "../../../db/restaurants";
 import Root from "../../../mobx/Root";
 import { AppStackParamList } from "../../../navigation/ParamList/AppStackParamList";
 import { HomeStackParamList } from "../../../navigation/ParamList/HomeStackParamList";
@@ -73,32 +72,32 @@ const styles = StyleSheet.create({
     margin: 10,
     marginTop: 40
   },
-  locationInputContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginBottom: 20,
-    marginTop: 10,
-    marginHorizontal: 10
-  },
-  locationInputWrapper: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 250,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: "#fff",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
+  // locationInputContainer: {
+  //   flexDirection: "row",
+  //   alignItems: "center",
+  //   justifyContent: "space-between",
+  //   marginBottom: 20,
+  //   marginTop: 10,
+  //   marginHorizontal: 10
+  // },
+  // locationInputWrapper: {
+  //   flexDirection: "row",
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  //   width: 250,
+  //   height: 40,
+  //   borderRadius: 20,
+  //   backgroundColor: "#fff",
+  //   shadowColor: "#000",
+  //   shadowOffset: {
+  //     width: 0,
+  //     height: 2
+  //   },
+  //   shadowOpacity: 0.25,
+  //   shadowRadius: 3.84,
 
-    elevation: 5
-  },
+  //   elevation: 5
+  // },
   btnWrapper: {
     alignItems: "center"
   },
@@ -127,14 +126,23 @@ const styles = StyleSheet.create({
 const HomeScreen: React.FC<HomeScreenProps> = ({ navigation, root }) => {
   const RBSheetRef = useRef<RBSheet>(null);
   const [date, setDate] = useState(new Date());
+  const [merchants, setMerchants] = useState<Restaurant[]>(restaurants);
+
+  const searchRestaurants: (arg: string) => void = keyword => {
+    if (keyword.length === 0) setMerchants(restaurants);
+    else {
+      const filteredMerchants = merchants.filter(({ name }) =>
+        name.toLowerCase().includes(keyword.toLowerCase())
+      );
+      setMerchants(filteredMerchants);
+    }
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <StatusBar barStyle="dark-content" />
-      <View style={styles.locationInputContainer}>
-        <TouchableOpacity
-          hitSlop={{ top: 20, left: 20, bottom: 20, right: 20 }}
-        >
+      {/* <View style={styles.locationInputContainer}>
+        <TouchableOpacity hitSlop={{ top: 20, left: 20, bottom: 20, right: 20 }}>
           <Entypo name="menu" size={27} color="black" />
         </TouchableOpacity>
         <View style={styles.locationInputWrapper}>
@@ -147,14 +155,14 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation, root }) => {
         >
           <EvilIcons name="clock" size={28} color="black" />
         </TouchableOpacity>
-      </View>
+      </View> */}
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.exploreBanner}>
           <Text style={styles.exploreBannerText}>Explore</Text>
         </View>
 
-        <SearchBar />
+        <SearchBar searchFunc={searchRestaurants} />
 
         <View style={styles.sectionBanner}>
           <Text style={styles.sectionMainText}>Markets</Text>
@@ -164,7 +172,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation, root }) => {
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
-          data={restaurants}
+          data={merchants}
           keyExtractor={item => item.name}
           renderItem={({ item }) => (
             <TouchableOpacity
@@ -187,7 +195,7 @@ const HomeScreen: React.FC<HomeScreenProps> = ({ navigation, root }) => {
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
-          data={restaurants}
+          data={merchants}
           keyExtractor={item => item.name}
           renderItem={({ item }) => (
             <TouchableOpacity

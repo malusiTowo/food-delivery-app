@@ -20,6 +20,14 @@ export interface Restaurant {
   products: Product[];
 }
 
+export interface Orders {
+  restaurantImage: string;
+  restaurantName: string;
+  orderDate: Date;
+  orderPrice: number;
+  orderStatus: "DELIVERING" | "DELIVERED" | "CANCELLED" | "PROCESSING";
+}
+
 export const restaurants: Restaurant[] = [
   {
     name: "Burger King",

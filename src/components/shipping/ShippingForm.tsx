@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-one-expression-per-line */
+import { AntDesign, EvilIcons } from "@expo/vector-icons";
 import React from "react";
 import { Dimensions, StyleSheet, Text, TextInput, View } from "react-native";
-import { AntDesign, EvilIcons } from "@expo/vector-icons";
 
 interface ShippingFormProps {
   streetName?: string;

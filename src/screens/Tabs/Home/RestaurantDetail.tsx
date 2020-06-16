@@ -15,7 +15,6 @@ import {
   View
 } from "react-native";
 import { AirbnbRating } from "react-native-ratings";
-import SearchBar from "../../../components/ExploreTab/SearchBar";
 import Root from "../../../mobx/Root";
 import { HomeStackParamList } from "../../../navigation/ParamList/HomeStackParamList";
 import RestaurantProductTabs from "./RestaurantProductTabs/RestaurantProductTabs";
@@ -116,10 +115,6 @@ const RestaurantDetail: React.FC<RestaurantDetailProps> = ({ navigation }) => {
             <SimpleLineIcons name="basket" size={20} color="#535BFE" />
             <Text style={{ color: "#ccc", paddingLeft: 3 }}>Free delivery</Text>
           </View>
-        </View>
-
-        <View style={{ marginTop: 10 }}>
-          <SearchBar />
         </View>
 
         <View style={{ marginTop: 10 }}>

@@ -95,10 +95,11 @@ const styles = StyleSheet.create({
 const ProductDisplay: React.FC<ProductDisplayProps> = ({ product, root }) => {
   const subQuantity = () => {
     const newQuantity = product.quantity - 1;
-    if (product.quantity === 1) root.basket.removeProduct(product);
-    if (product.quantity > 1) {
+    if (newQuantity === 0) root.basket.clearBasket();
+    else if (newQuantity > 1) {
       root.basket.upateProductQuantity(product, newQuantity);
     }
+    console.log(root.basket.products);
   };
 
   const addQuantity = () => {

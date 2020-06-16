@@ -1,4 +1,6 @@
+import { Orders } from "../../db/restaurants";
+
 export type OrdersStackParamList = {
   Orders: undefined;
-  OrdersDetail: undefined;
+  OrdersDetail: { order: Orders };
 };

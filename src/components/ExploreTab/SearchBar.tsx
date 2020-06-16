@@ -1,10 +1,13 @@
-import React from "react";
-import { Dimensions, StyleSheet, TextInput, View } from "react-native";
+/* eslint-disable react-hooks/exhaustive-deps */
 import { EvilIcons, MaterialIcons } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import { Dimensions, StyleSheet, TextInput, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-interface SearchBarProps {}
+interface SearchBarProps {
+  searchFunc: (keyword: string) => void;
+}
 
 const { width } = Dimensions.get("screen");
 
@@ -38,8 +41,12 @@ const styles = StyleSheet.create({
   }
 });
 
-const SearchBar: React.FC<SearchBarProps> = () => {
+const SearchBar: React.FC<SearchBarProps> = ({ searchFunc }) => {
   const navigation = useNavigation();
+  const [searchInput, setSearchInput] = useState("");
+  useEffect(() => {
+    searchFunc(searchInput);
+  }, [searchInput]);
 
   return (
     <View style={styles.searchBarContainer}>
@@ -49,6 +56,7 @@ const SearchBar: React.FC<SearchBarProps> = () => {
         </View>
         <View style={{ flex: 0.6 }}>
           <TextInput
+            onChangeText={txt => setSearchInput(txt.trim())}
             returnKeyType="go"
             style={styles.searchInput}
             placeholder="Search"

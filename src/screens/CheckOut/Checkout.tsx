@@ -16,7 +16,6 @@ import { ScrollView } from "react-native-gesture-handler";
 import ProductDisplay from "../../components/Basket/ProductDisplay";
 import ModalComponent from "../../components/Modal/Modal";
 import ShippingForm from "../../components/shipping/ShippingForm";
-import { restaurants } from "../../db/restaurants";
 import Root from "../../mobx/Root";
 import { AppStackParamList } from "../../navigation/ParamList/AppStackParamList";
 import { TabsParamList } from "../../navigation/ParamList/TabsParamList";
@@ -73,7 +72,7 @@ const CheckOut: React.FC<CheckOutProps> = ({ navigation, root }) => {
   const [isVisible, setIsVisible] = useState(false);
   const closeModal = () => {
     setIsVisible(false);
-    root.orders.setProducts(root.basket.products);
+    // root.orders.setProducts(toJS(root.basket.products));
     root.basket.clearBasket();
     navigation.navigate("Orders");
   };
@@ -107,12 +106,12 @@ const CheckOut: React.FC<CheckOutProps> = ({ navigation, root }) => {
         </View>
 
         <FlatList
-          data={restaurants[0].products}
+          data={[0, 1, 2]}
           horizontal
           showsHorizontalScrollIndicator={false}
-          keyExtractor={item => item.name}
+          keyExtractor={item => item}
           renderItem={() => (
-            <View style={{ margin: 10, marginTop: 0 }}>
+            <View style={{ width: width - 40, margin: 10, marginTop: 0 }}>
               <ShippingForm
                 mode="display"
                 streetName="57 route d'espagne"
@@ -190,7 +189,7 @@ const CheckOut: React.FC<CheckOutProps> = ({ navigation, root }) => {
       <ModalComponent
         toggle={closeModal}
         isVisible={isVisible}
-        btnTitle="Continue shopping"
+        btnTitle="Track my order"
         body="You can track the delivery in the orders tab"
         title="Order number is 3399922"
       />

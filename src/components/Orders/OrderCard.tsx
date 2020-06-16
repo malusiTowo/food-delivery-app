@@ -1,13 +1,17 @@
 import { Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import moment from "moment";
 import React from "react";
 import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { deliveryStatusColors } from "../../const/Theme";
+import { Orders } from "../../db/restaurants";
 import { OrdersStackParamList } from "../../navigation/ParamList/OrdersStackParamList";
 
-interface OrderCardProps {}
+interface OrderCardProps {
+  order: Orders;
+}
 
 const { width } = Dimensions.get("screen");
 
@@ -32,14 +36,14 @@ const styles = StyleSheet.create({
   }
 });
 
-const OrderCard: React.FC<OrderCardProps> = () => {
+const OrderCard: React.FC<OrderCardProps> = ({ order }) => {
   const navigation = useNavigation<
     StackNavigationProp<OrdersStackParamList, "Orders">
   >();
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate("OrdersDetail")}
+      onPress={() => navigation.navigate("OrdersDetail", { order })}
       containerStyle={{ overflow: "visible" }}
       style={styles.container}
     >
@@ -48,8 +52,7 @@ const OrderCard: React.FC<OrderCardProps> = () => {
           <Image
             style={{ height: 70, width: 70, borderRadius: 5 }}
             source={{
-              uri:
-                "https://media-cdn.tripadvisor.com/media/photo-s/11/0f/6d/9c/burger-king.jpg"
+              uri: order.restaurantImage
             }}
           />
         </View>
@@ -61,11 +64,17 @@ const OrderCard: React.FC<OrderCardProps> = () => {
               justifyContent: "space-between"
             }}
           >
-            <Text style={{ color: "#ccc" }}>25 Aug, 9:30</Text>
-            <Text style={{ color: "#ccc", fontWeight: "500" }}>$45.11</Text>
+            <Text style={{ color: "#ccc" }}>
+              {moment(order.orderDate).format("D MMM, HH:mm")}
+            </Text>
+            <Text style={{ color: "#ccc", fontWeight: "500" }}>
+              ${order.orderPrice}
+            </Text>
           </View>
           <View style={{ marginVertical: 2 }}>
-            <Text style={{ fontSize: 18, fontWeight: "600" }}>Yellow Food</Text>
+            <Text style={{ fontSize: 18, fontWeight: "600" }}>
+              {order.restaurantName}
+            </Text>
           </View>
           <View
             style={{
@@ -81,14 +90,54 @@ const OrderCard: React.FC<OrderCardProps> = () => {
                 justifyContent: "flex-start"
               }}
             >
-              <Entypo
-                name="dot-single"
-                size={24}
-                color={deliveryStatusColors.assigned}
-              />
-              <Text style={{ color: deliveryStatusColors.assigned }}>
-                Bird assigned
-              </Text>
+              {order.orderStatus === "DELIVERING" && (
+                <>
+                  <Entypo
+                    name="dot-single"
+                    size={24}
+                    color={deliveryStatusColors.assigned}
+                  />
+                  <Text style={{ color: deliveryStatusColors.assigned }}>
+                    Bird assigned
+                  </Text>
+                </>
+              )}
+              {order.orderStatus === "CANCELLED" && (
+                <>
+                  <Entypo
+                    name="dot-single"
+                    size={24}
+                    color={deliveryStatusColors.cancelled}
+                  />
+                  <Text style={{ color: deliveryStatusColors.cancelled }}>
+                    Order cancelled
+                  </Text>
+                </>
+              )}
+              {order.orderStatus === "DELIVERED" && (
+                <>
+                  <Entypo
+                    name="dot-single"
+                    size={24}
+                    color={deliveryStatusColors.delivered}
+                  />
+                  <Text style={{ color: deliveryStatusColors.delivered }}>
+                    Order delivered
+                  </Text>
+                </>
+              )}
+              {order.orderStatus === "PROCESSING" && (
+                <>
+                  <Entypo
+                    name="dot-single"
+                    size={24}
+                    color={deliveryStatusColors.processing}
+                  />
+                  <Text style={{ color: deliveryStatusColors.processing }}>
+                    Waiting for confirmation
+                  </Text>
+                </>
+              )}
             </View>
           </View>
         </View>

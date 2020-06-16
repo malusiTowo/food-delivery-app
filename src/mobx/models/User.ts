@@ -3,7 +3,7 @@ import { types } from "mobx-state-tree";
 
 const User = types
   .model({
-    name: types.optional(types.string, ""),
+    name: types.optional(types.string, "d"),
     email: types.optional(types.string, ""),
     picture: types.optional(types.string, "")
   })

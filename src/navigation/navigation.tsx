@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { View } from "native-base";
 import * as Font from "expo-font";
 import { inject, observer } from "mobx-react";
+import { View } from "native-base";
+import React, { useEffect, useState } from "react";
 import { ActivityIndicator } from "react-native";
-
-import AuthStack from "./AuthStack";
-import AppStack from "./AppStack";
 import Root from "../mobx/Root";
+import AppStack from "./AppStack";
+import AuthStack from "./AuthStack";
 
 const CUSTOM_FONTS = {
   Roboto: require("../../node_modules/native-base/Fonts/Roboto.ttf"),
@@ -44,7 +43,7 @@ const Navigation: React.FC<AppProps> = ({ root }) => {
 
   return (
     <NavigationContainer>
-      {root.isLoggedIn ? <AppStack /> : <AuthStack />}
+      {root.user.name.length > 0 ? <AppStack /> : <AuthStack />}
     </NavigationContainer>
   );
 };

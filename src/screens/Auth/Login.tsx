@@ -1,3 +1,7 @@
+import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { inject } from "mobx-react";
+import { Button } from "native-base";
 import React, { useRef, useState } from "react";
 import {
   Dimensions,
@@ -8,14 +12,9 @@ import {
   TouchableOpacity,
   View
 } from "react-native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { Button } from "native-base";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { FontAwesome, MaterialCommunityIcons } from "@expo/vector-icons";
-
-import { inject } from "mobx-react";
-import { AuthStackParamList } from "../../navigation/ParamList/AuthStackParamList";
 import Root from "../../mobx/Root";
+import { AuthStackParamList } from "../../navigation/ParamList/AuthStackParamList";
 
 type LoginScreenNavigationProp = StackNavigationProp<
   AuthStackParamList,
