@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import { Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import { Button } from "native-base";
+import { inject, observer } from "mobx-react";
 import { Product } from "../../db/restaurants";
+import Root from "../../mobx/Root";
 
 interface ProductDisplayProps {
+  root?: typeof Root;
   product: Product;
   addProduct: (product: Product) => void;
   removeProduct: (product: Product) => void;
+  handleUpdateProductBuyState: (product: Product, state: boolean) => void;
 }
 
 const { width } = Dimensions.get("screen");
@@ -91,15 +95,15 @@ const styles = StyleSheet.create({
 const ProductDisplay: React.FC<ProductDisplayProps> = ({
   product,
   addProduct,
-  removeProduct
+  removeProduct,
+  handleUpdateProductBuyState
 }) => {
-  const [isBought, setIsBought] = useState<boolean>(false);
   const handleBuyInteraction = () => {
-    setIsBought((prevState: boolean) => {
-      if (!prevState) addProduct(product);
-      else removeProduct(product);
-      return !prevState;
-    });
+    const prevState = product.isBought;
+    if (!prevState) addProduct(product);
+    else removeProduct(product);
+    handleUpdateProductBuyState(product, !prevState);
+    return !prevState;
   };
 
   return (
@@ -130,16 +134,16 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({
             onPress={handleBuyInteraction}
             style={[
               styles.buyBtn,
-              { borderColor: isBought ? "#FF4766" : "#535BFE" }
+              { borderColor: product.isBought ? "#FF4766" : "#535BFE" }
             ]}
           >
             <Text
               style={[
                 styles.buyBtnText,
-                { color: isBought ? "#FF4766" : "#535BFE" }
+                { color: product.isBought ? "#FF4766" : "#535BFE" }
               ]}
             >
-              {isBought ? "Remove" : "Buy"}
+              {product.isBought ? "Remove" : "Buy"}
             </Text>
           </Button>
         </View>
@@ -148,4 +152,4 @@ const ProductDisplay: React.FC<ProductDisplayProps> = ({
   );
 };
 
-export default ProductDisplay;
+export default inject("root")(observer(ProductDisplay));

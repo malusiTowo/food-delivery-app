@@ -17,10 +17,9 @@ const BaksetStore = types
       self.products = self.products.filter(removeProductFilter);
     },
     findProduct(product: Product) {
-      const selectedProduct = self.products.find(
+      return self.products.find(
         ({ name }: { name: string }) => name === product.name
       );
-      return selectedProduct;
     },
     upateProductQuantity(product: Product, newQuantity: number) {
       const selectedProduct = this.findProduct(product);
@@ -28,6 +27,12 @@ const BaksetStore = types
     },
     clearBasket() {
       self.products = [];
+    },
+    removeFromBasket(product: Product) {
+      const filteredProducts = self.products.filter(
+        ({ name }: { name: string }) => name !== product.name
+      );
+      self.products = filteredProducts;
     }
   }))
   .views(self => ({

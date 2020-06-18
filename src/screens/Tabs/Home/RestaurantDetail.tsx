@@ -9,6 +9,7 @@ import {
   Image,
   SafeAreaView,
   ScrollView,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -50,13 +51,16 @@ const RestaurantDetail: React.FC<RestaurantDetailProps> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <TouchableOpacity
-        hitSlop={{ bottom: 20, left: 20, top: 20, right: 20 }}
-        onPress={navigation.goBack}
-        style={styles.backBtnWrapper}
-      >
-        <Ionicons name="ios-arrow-back" size={35} color="black" />
-      </TouchableOpacity>
+      <StatusBar barStyle="light-content" />
+      <View style={{ backgroundColor: "transparent" }}>
+        <TouchableOpacity
+          hitSlop={{ bottom: 20, left: 20, top: 20, right: 20 }}
+          onPress={navigation.goBack}
+          style={styles.backBtnWrapper}
+        >
+          <Ionicons name="ios-arrow-back" size={35} color="black" />
+        </TouchableOpacity>
+      </View>
 
       <ScrollView showsVerticalScrollIndicator={false}>
         <View

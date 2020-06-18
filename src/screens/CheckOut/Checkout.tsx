@@ -7,6 +7,7 @@ import {
   Dimensions,
   FlatList,
   SafeAreaView,
+  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -72,13 +73,16 @@ const CheckOut: React.FC<CheckOutProps> = ({ navigation, root }) => {
   const [isVisible, setIsVisible] = useState(false);
   const closeModal = () => {
     setIsVisible(false);
-    // root.orders.setProducts(toJS(root.basket.products));
+    root.basket.products.map(product =>
+      root.restaurantProducts.updateProductBuyStatus(product, false)
+    );
     root.basket.clearBasket();
     navigation.navigate("Orders");
   };
 
   return (
     <SafeAreaView style={styles.container}>
+      <StatusBar barStyle="dark-content" />
       <TouchableOpacity
         hitSlop={{ bottom: 20, left: 20, top: 20, right: 20 }}
         onPress={navigation.goBack}
@@ -109,7 +113,7 @@ const CheckOut: React.FC<CheckOutProps> = ({ navigation, root }) => {
           data={[0, 1, 2]}
           horizontal
           showsHorizontalScrollIndicator={false}
-          keyExtractor={item => item}
+          keyExtractor={item => `${item}`}
           renderItem={() => (
             <View style={{ width: width - 40, margin: 10, marginTop: 0 }}>
               <ShippingForm

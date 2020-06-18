@@ -26,6 +26,10 @@ const RestaurantTab: React.FC<RestaurantTabProps> = ({ root }) => {
     root.basket.removeProduct(product);
   };
 
+  const handleUpdateProductBuyState = (product: Product, buyState: boolean) => {
+    root.restaurantProducts.updateProductBuyStatus(product, buyState);
+  };
+
   return (
     <View style={styles.container}>
       {root?.restaurantProducts?.products && (
@@ -37,6 +41,7 @@ const RestaurantTab: React.FC<RestaurantTabProps> = ({ root }) => {
           renderItem={({ item }) => (
             <View style={{ margin: 10 }}>
               <ProductDisplay
+                handleUpdateProductBuyState={handleUpdateProductBuyState}
                 addProduct={handleAddToBasket}
                 removeProduct={handleRemoveFromBasket}
                 product={item}

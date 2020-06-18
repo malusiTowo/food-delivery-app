@@ -5,7 +5,9 @@ import React, { useEffect, useState } from "react";
 import {
   Dimensions,
   FlatList,
+  Image,
   SafeAreaView,
+  StatusBar,
   StyleSheet,
   Text,
   View
@@ -31,7 +33,7 @@ const { width } = Dimensions.get("screen");
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F9F9FB"
+    backgroundColor: "#fff"
   },
   btnWrapper: {
     alignItems: "center",
@@ -76,28 +78,49 @@ const BasketScreen: React.FC<BasketScreenProps> = ({ navigation, root }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        data={root?.basket?.products}
-        ListHeaderComponent={
-          <View style={{ marginLeft: 20, marginTop: 10 }}>
-            <Text style={{ fontSize: 38, fontWeight: "800" }}>Basket</Text>
+      <StatusBar barStyle="dark-content" />
+      {root?.basket.products.length > 0 ? (
+        <>
+          <FlatList
+            showsVerticalScrollIndicator={false}
+            data={root?.basket?.products}
+            ListHeaderComponent={
+              <View style={{ marginLeft: 20, marginTop: 10 }}>
+                <Text style={{ fontSize: 38, fontWeight: "800" }}>Basket</Text>
+              </View>
+            }
+            keyExtractor={item => item.name}
+            renderItem={({ item }) => (
+              <View style={{ margin: 10 }}>
+                <ProductDisplay product={item} />
+              </View>
+            )}
+          />
+          <View style={styles.btnWrapper}>
+            <Button onPress={goToCheckout} style={styles.btn}>
+              <Text style={styles.btnText}>Go to Checkout</Text>
+            </Button>
           </View>
-        }
-        keyExtractor={item => item.name}
-        renderItem={({ item }) => (
-          <View style={{ margin: 10 }}>
-            <ProductDisplay product={item} />
-          </View>
-        )}
-      />
-      {root?.basket?.products.length > 0 && (
-        <View style={styles.btnWrapper}>
-          <Button onPress={goToCheckout} style={styles.btn}>
-            <Text style={styles.btnText}>Go to Checkout</Text>
-          </Button>
+        </>
+      ) : (
+        <View
+          style={{
+            flex: 1,
+            backgroundColor: "#fff",
+            justifyContent: "center",
+            alignItems: "center"
+          }}
+        >
+          <Text style={{ fontSize: 27, fontWeight: "600" }}>
+            Your basket is empty
+          </Text>
+          <Image
+            style={{ height: 300, width: 300 }}
+            source={require("../../../../assets/emptyCart.png")}
+          />
         </View>
       )}
+
       <Modal
         title="Your basket is empty"
         body="Buy products in stores. Your selected products will appear here."
